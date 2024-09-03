@@ -1,0 +1,56 @@
+---frmAdmin---
+Select * from tbl_School where sch_ID Collate SQL_Latin1_General_CP1254_CS_AS = '<string _id>' --Girilen kullanıcı adını listeliyor
+select * from tbl_SchoolType --SchoolType i listeliyor
+select * from tbl_SchoolKind where schKnd_schTypID = <tbl_SchoolType.id> --Seçilen SchoolType e göre SchoolKind listeliyor
+select sch_ID as 'Okul Kodu',sch_Name as 'Okul Adı',schTyp_Name as 'Okul Tipi',schKnd_Name as 'Okul Türü' from tbl_School inner join tbl_SchoolKind on tbl_School.sch_schKndID = tbl_SchoolKind.schKnd_ID inner join tbl_SchoolType on tbl_SchoolKind.schKnd_schTypID = tbl_SchoolType.schTyp_ID --Bağlı tabloları çağırıp listeledik
+select sch_ID as 'Okul Kodu',sch_Name as 'Okul Adı',schTyp_Name as 'Okul Tipi',schKnd_Name as 'Okul Türü' from tbl_School inner join tbl_SchoolKind on tbl_School.sch_schKndID = tbl_SchoolKind.schKnd_ID inner join tbl_SchoolType on tbl_SchoolKind.schKnd_schTypID = tbl_SchoolType.schTyp_ID where sch_ID LIKE '% <string search> %' --Like ile içerenen harf ve rakamları listeleyen metod (4 adet benzeri daha var)
+select * from tbl_SchoolType where schTyp_Name = '<string name>' --SchoolType adını şartına göre listeliyor
+select * from tbl_SchoolKind where schKnd_Name = '<string name>' --SchoolKind adını şartına göre listeliyor
+insert into tbl_School (sch_ID,sch_Name,sch_schKndID) values (@a1,@a2,@a3) --School tablosuna veri girişi sağlanıyor (4 adet benzeri daha var)
+update tbl_School set sch_Name=@a1, sch_schKndID=@a2 where sch_ID = @id --School tablosundan @id şartına göre güncelliyor
+delete from tbl_School where sch_ID = @id --School tablosundan @id şartına göre siliyor
+select * from tbl_User where usr_TC = '<tc>' --tc şartına göre listeliyor
+
+---frmInfo---
+select * from tbl_School inner join tbl_SchoolAddress on tbl_School.sch_ID = tbl_SchoolAddress.schAdd_schID inner join tbl_SchoolConnection on tbl_School.sch_ID = tbl_SchoolConnection.schCon_schID inner join tbl_SchoolLogin on tbl_School.sch_ID = tbl_SchoolLogin.schLgn_schID where sch_ID = '<string _key>' --Bağlı tablolardan istenileni alınarak listeliyor (user tablosuda geçerli)
+update tbl_SchoolAddress set schAdd_sehirID = @u1, schAdd_ilceID = @u2, schAdd_Explanation = @u3 where schAdd_schID = @id --SchoolAddress tablosundan @id şartına göre güncelliyor (2 adet daha var) (user tablosuda geçerli)
+select * from tbl_Sehir --Sehirleri listeliyor
+select * from tbl_Ilce where sehir = <sehir.id> --sehirdeki idye göre listeliyor ilçeleri
+SELECT COUNT(*) FROM tbl_UserLogin WHERE usrLgn_Nickname Collate SQL_Latin1_General_CP1254_CS_AS = '<string userName>' --İstenilen usrLgn_Nickname şartına göre listeleyip sayıyor (School içinde geçerli)
+
+---frmLogin---
+SELECT COUNT(*) FROM tbl_SchoolLogin WHERE schLgn_Nickname Collate SQL_Latin1_General_CP1254_CS_AS = '<string userName>' AND schLgn_Password Collate SQL_Latin1_General_CP1254_CS_AS = '<string password>' AND schLgn_schID = '<string SchoolCode>' --Şartları sağlayanları listeleyip sayıyor (user içinde geçerli)
+
+---frmNewUser---
+select * from tbl_Sehir --Sehirleri listeliyor
+select * from tbl_Ilce where sehir = <sehir.id> --sehirdeki idye göre listeliyor ilçeleri
+insert into tbl_User (usr_TC,usr_Name,usr_Surname) values (@a1,@a2,@a3) --user tablosuna veri ekliyor (3 adet daha var)
+SELECT COUNT(*) FROM tbl_UserLogin WHERE usrLgn_Nickname Collate SQL_Latin1_General_CP1254_CS_AS = '<string userName>' --İstenilen usrLgn_Nickname şartına göre listeleyip sayıyor
+
+---frmSchool---
+select * from tbl_School inner join tbl_SchoolKind on tbl_School.sch_schKndID = tbl_SchoolKind.schKnd_ID inner join tbl_SchoolType on tbl_SchoolKind.schKnd_schTypID = tbl_SchoolType.schTyp_ID inner join tbl_SchoolProcess on tbl_School.sch_ID = tbl_SchoolProcess.schPrc_schID where schPrc_schID = '<string schoolCode>' --schPrc_schID şartına göre listeliyor
+update tbl_SchoolProcess set schPrc_StudentNumber=@a1, schPrc_ClassNumber=@a2, schPrc_SchoolM=@a3, schPrc_GuardNumber=@a4, schPrc_GuardShack=@a5, schPrc_CardEntrance=@a6, schPrc_Environment=@a7, schPrc_MoneyStudent=@a8, schPrc_MoneySource=@a9, schPrc_Source=@a10, schPrc_Point=@a11 where schPrc_schID = @id --@id şartına göre güncelliyor
+
+---frmSchoolMessage---
+select usrSchMes_ID as 'Mes. No', sch_Name as 'Okul Adı',usrSchMes_Title as 'Başlık', concat(usr_Name,' ',usr_Surname) as 'Yazar Adı' from tbl_UserSchoolMessage inner join tbl_User on tbl_UserSchoolMessage.usrSchMes_usrTC = tbl_User.usr_TC inner join tbl_School on tbl_UserSchoolMessage.usrSchMes_schID = tbl_School.sch_ID where usrSchMes_schID = <_schoolCode> --Okul koduna göre mesajları listeliyor
+Select * from tbl_UserSchoolMessage inner join tbl_User on tbl_UserSchoolMessage.usrSchMes_usrTC = tbl_User.usr_TC where usrSchMes_ID = <_messageID> --mesajIDye göre mesajları listeliyor
+
+---frmUser---
+select * from tbl_SchoolType --SchoolType i listeliyor
+select * from tbl_SchoolKind where schKnd_schTypID = <tbl_SchoolType.id> --Seçilen SchoolType e göre SchoolKind listeliyor
+select * from tbl_Sehir --Sehirleri listeliyor
+select * from tbl_Ilce where sehir = <sehir.id> --sehirdeki idye göre listeliyor ilçeleri
+select sch_ID as 'Okul Kodu',sch_Name as 'Okul Adı',schTyp_Name as 'Okul Tipi',schKnd_Name as 'Okul Türü' from tbl_School inner join tbl_SchoolType on tbl_School.sch_schKndID = tbl_SchoolType.schTyp_ID inner join tbl_SchoolKind on tbl_School.sch_schKndID = tbl_SchoolKind.schKnd_ID inner join tbl_SchoolAddress on tbl_School.sch_ID = tbl_SchoolAddress.schAdd_schID where sch_ID LIKE '%<schoolCode>%' and sch_Name LIKE '%<schoolName>%' and schTyp_ID LIKE '%<tbl_SchoolType.id>"%' and sch_schKndID LIKE '%<tbl_SchoolKind.id>%' and schAdd_sehirID LIKE '%<tbl_Sehir.id>%' and schAdd_ilceID LIKE '%<tbl_Ilce.id>%' --filtreli bir şekilde bağlı tablolaro çağırarak listeliyor
+select sch_ID as 'Okul Kodu',sch_Name as 'Okul Adı',schTyp_Name as 'Okul Tipi',schKnd_Name as 'Okul Türü' from tbl_School inner join tbl_SchoolType on tbl_School.sch_schKndID = tbl_SchoolType.schTyp_ID inner join tbl_SchoolKind on tbl_School.sch_schKndID = tbl_SchoolKind.schKnd_ID --Filtresiz bir şekilde bağlı tabloları listeliyor
+select * from tbl_User where usr_TC = '<tc>' --tc şartına göre listeliyor
+
+---frmUserMessage---
+select usrSchMes_ID as 'Mes. No', sch_Name as 'Okul Adı',usrSchMes_Title as 'Başlık', concat(usr_Name,' ',usr_Surname) as 'Yazar Adı' from tbl_UserSchoolMessage inner join tbl_User on tbl_UserSchoolMessage.usrSchMes_usrTC = tbl_User.usr_TC inner join tbl_School on tbl_UserSchoolMessage.usrSchMes_schID = tbl_School.sch_ID where usrSchMes_schID = <_schoolCode> --Okul koduna göre mesajları listeliyor
+select * from tbl_UserSchoolMessage where usrSchMes_ID = <_messageID> --mesajIDye göre mesajları listeliyor
+insert into tbl_UserSchoolMessage (usrSchMes_Title,usrSchMes_Explanation,usrSchMes_usrTC,usrSchMes_schID) values (@a1,@a2,@a3,@a4) --Mesaj tablosuna veri ekliyor
+
+---frmSchoolInfo---
+select sch_ID,sch_Name,schTyp_Name,schKnd_Name,schCon_Phone,schCon_Email,tbl_Sehir.sehir,ilce,schAdd_Explanation,schPrc_Point from tbl_School inner join tbl_SchoolKind on tbl_School.sch_schKndID = tbl_SchoolKind.schKnd_ID inner join tbl_SchoolType on tbl_SchoolType.schTyp_ID = tbl_SchoolKind.schKnd_schTypID inner join tbl_SchoolConnection on tbl_School.sch_ID = tbl_SchoolConnection.schCon_schID inner join tbl_SchoolAddress on tbl_School.sch_ID = tbl_SchoolAddress.schAdd_schID inner join tbl_Sehir on tbl_SchoolAddress.schAdd_sehirID = tbl_Sehir.id inner join tbl_Ilce on tbl_SchoolAddress.schAdd_ilceID = tbl_Ilce.id inner join tbl_SchoolProcess on tbl_School.sch_ID = tbl_SchoolProcess.schPrc_schID where sch_ID = '<_schoolCode>' --schoolCode göre bağlantılı tabloları listeliyor
+
+---frmSchoolPint---
+select * from tbl_School inner join tbl_SchoolProcess on tbl_School.sch_ID = tbl_SchoolProcess.schPrc_schID where sch_ID = '<_schoolCode>' --schoolCode göre bağlantılı tabloları listeliyor
